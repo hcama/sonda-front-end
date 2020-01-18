@@ -1,0 +1,145 @@
+<div id="mantenimiento-usuario">
+    <div class="page-header page-header-light">
+
+        <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+            <div class="d-flex justify-content-center">
+                <a id="agregarUsuario" class="breadcrumb-elements-item">
+                    <i class="ti-plus font-20"></i>
+                </a>
+                <a id="agregarUsuario" class="breadcrumb-elements-item">
+                    <i class="ti-import font-20"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="card">
+            <div class="card-header bg-light header-elements-inline">
+                <h5 class="card-title">Búsqueda avanzada</h5>
+                <div class="header-elements">
+                    <div class="list-icons">
+                        <a href="#id_cb_busqueda_avanzada" class="list-icons-item" data-action="collapse"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body collapse" id="id_cb_busqueda_avanzada">
+                <form action="#" id="frm_busquedaUsuario">
+                    <div class="row form-group align-items-end">
+                        <div class="col-md-3">
+                            <label>Nombre completo:</label>
+                            <input type="text" id="txt_nombre_completo" class="form-control" maxlength="250">
+                        </div>
+                        <div class="col-md-3">
+                            <label>Usuario de  correo:</label>
+                            <input type="text" id="txt_user_name" class="form-control">
+                        </div>
+                        <div class="col-md-3">
+                            <label>Estado:</label>
+                            <select class="custom-select" id="cb_activo">
+								<option value="" selected>Todos</option>
+			                    <option value="1">Activo</option>
+			                    <option value="0">Inactivo</option>
+							</select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="d-flex justify-content-end">
+                                <button id="btn_limpiar" type="submit" class="btn btn-light">
+									Limpiar
+									<i class="icon-eraser3 ml-2"></i>
+								</button>
+                                <button id="btn_buscar" type="submit" class="btn btn-primary ml-3">
+									Buscar
+									<i class="icon-search4 ml-2"></i>
+								</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <table id="tbl_mostrarUsuario" class="table datatable-basic">
+                    <thead class="bg-primary">
+                        <th>@lang('usuario.id_usuario') </th>
+                        <th>@lang('usuario.nombre_completo') </th>
+                        <th>@lang('usuario.user_name') </th>
+                        <th>@lang('usuario.created_at') </th>
+                        <th>@lang('usuario.nombre_perfiles') </th>
+                        <th>@lang('usuario.estado') </th>
+                        <th class="text-center">Acciones</th>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dvjson"></div>
+<div class="modal p-form fade" id="mdl_ActualizarUsuario" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-warning" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-center">
+                <h5 id="CabeceraModal" class="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					x
+				</button>
+            </div>
+            <form id="frm_MostrarRegistroUsuario">
+                <div class="modal-body form-group">
+                    <input type="hidden" id="ih_id_usuario">
+                    <div class="row form-group ">
+                        <div class="col-md-4">
+                            <label class="col-form-label" for="txt_nombre_completo_MRU">
+								@lang('usuario.nombre_completo'):
+								<span>(*)</span>
+						 	</label>
+                            <input type="text" id="txt_nombre_completo_MRU" name="txt_nombre_completo_MRU" class="form-control" maxlength="450">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label" for="txt_user_name_MRU">
+								@lang('usuario.user_name')
+								<span>(*)</span>
+							</label>
+                            <input type="text" id="txt_user_name_MRU" name="txt_user_name_MRU" class="form-control" maxlength="250">
+                        </div>
+
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-8">
+                            <label class="col-form-label" for="">
+								@lang('usuario.nombre_perfiles')
+							</label>
+                            <select class="form-control select" multiple="multiple" id="sm_perfiles_MRU" data-fouc>
+							</select>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-8">
+                            <label class="col-form-label" for="cb_id_empresa_MRU">
+								Clientes
+							</label>
+                            <select class="form-control select-search custom-select" name="cb_id_empresa_MRU" id="cb_id_empresa_MRU" data-fouc></select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="table-responsive">
+                            <table id="tbl_mostrarUsuariosClientes" class="table datatable-basic">
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button id="btn_cerrar_MRU" type="button" class="btn text-primary ml-3" data-dismiss="modal">
+					Cerrar
+				</button>
+                <button id="btn_guardar_MRU" type="button" class="btn bg-primary">
+					Guardar
+				</button>
+            </div>
+        </div>
+    </div>
+
+</div>
