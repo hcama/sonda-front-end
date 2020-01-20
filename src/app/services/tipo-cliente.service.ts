@@ -6,8 +6,7 @@ import { TipoClienteModel } from '../models/TipoCliente.model';
 @Injectable({
   providedIn: 'root'
 })
-export class TipoClienteService {
-  //private url_app = 'https://localhost:44386';
+export class TipoClienteService { 
   private url_app = 'https://sondaapi20200117013021.azurewebsites.net';
   constructor(private http: HttpClient) { }
   getQuery(url: string) {
