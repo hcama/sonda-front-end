@@ -8,8 +8,8 @@ import { map } from 'rxjs/operators';
 })
 export class ClienteService {
 
-  //private url_app = 'https://localhost:44386';
-  private url_app = 'https://sondaapi20200117013021.azurewebsites.net';
+  private url_app = 'https://localhost:44386';
+
   constructor(private http: HttpClient) { }
   getQuery(url: string) {
     const urlBase = `${this.url_app}${url}`;
