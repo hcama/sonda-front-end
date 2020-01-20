@@ -4,15 +4,16 @@ import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
 import { StarterComponent } from './starter.component';
+import { DataTablesModule } from 'angular-datatables';
 
 const routes: Routes = [
   {
     path: '',
     data: {
-      title: 'Mantenimiento de Usuarios',
+      title: 'Mantenimiento de Cliente',
       urls: [
         { title: 'Mantenimiento', url: '/dashboard' },
-        { title: 'Usuario' }
+        { title: 'Cliente' }
       ]
     },
     component: StarterComponent
@@ -20,7 +21,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [FormsModule, CommonModule, RouterModule.forChild(routes)],
+  imports: [FormsModule, CommonModule, RouterModule.forChild(routes),DataTablesModule],
   declarations: [StarterComponent]
 })
 export class StarterModule {}

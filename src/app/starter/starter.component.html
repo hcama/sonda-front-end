@@ -1,57 +1,44 @@
-<div id="mantenimiento-usuario">
+<div id="mantenimiento-cliente">
     <div class="page-header page-header-light">
+        <div class="d-flex justify-content-end">
+            <a class="waves-effect waves-dark mr-2" (click)="agregarCliente(modal_cliente)" title="Agregar">
+                <i class="ti-plus font-20"></i>
+            </a>
 
-        <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
-            <div class="d-flex justify-content-center">
-                <a id="agregarUsuario" class="breadcrumb-elements-item">
-                    <i class="ti-plus font-20"></i>
-                </a>
-                <a id="agregarUsuario" class="breadcrumb-elements-item">
-                    <i class="ti-import font-20"></i>
-                </a>
-            </div>
         </div>
+
     </div>
     <div class="content">
         <div class="card">
             <div class="card-header bg-light header-elements-inline">
                 <h5 class="card-title">Búsqueda avanzada</h5>
-                <div class="header-elements">
-                    <div class="list-icons">
-                        <a href="#id_cb_busqueda_avanzada" class="list-icons-item" data-action="collapse"></a>
-                    </div>
-                </div>
+
             </div>
-            <div class="card-body collapse" id="id_cb_busqueda_avanzada">
-                <form action="#" id="frm_busquedaUsuario">
+            <div class="card-body" id="id_cb_busqueda_avanzada">
+                <form name="frm_busquedaCliente" #frm_busquedaCliente="ngForm">
                     <div class="row form-group align-items-end">
                         <div class="col-md-3">
-                            <label>Nombre completo:</label>
-                            <input type="text" id="txt_nombre_completo" class="form-control" maxlength="250">
-                        </div>
-                        <div class="col-md-3">
-                            <label>Usuario de  correo:</label>
-                            <input type="text" id="txt_user_name" class="form-control">
-                        </div>
-                        <div class="col-md-3">
-                            <label>Estado:</label>
-                            <select class="custom-select" id="cb_activo">
-								<option value="" selected>Todos</option>
-			                    <option value="1">Activo</option>
-			                    <option value="0">Inactivo</option>
+                            <label>Tipo Cliente:</label>
+                            <select class="custom-select" [(ngModel)]="tipoCliente.id" name="id">
+                                <option value="" selected>Todos</option>
+                                <option *ngFor="let item of lst_tipoCliente" [value]="item.id">{{item.descripcion}} </option>                               		           
 							</select>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="d-flex justify-content-end">
-                                <button id="btn_limpiar" type="submit" class="btn btn-light">
+                                <button id="btn_limpiar" type="reset" class="btn btn-light">
 									Limpiar
 									<i class="icon-eraser3 ml-2"></i>
 								</button>
-                                <button id="btn_buscar" type="submit" class="btn btn-primary ml-3">
+                                <button id="btn_buscar" type="button" class="btn btn-primary ml-3" (click)="buscarClientes()">
 									Buscar
 									<i class="icon-search4 ml-2"></i>
+                                </button>
+                                <button id="btn_descargar" type="button" class="btn btn-light" (click)="buscarClientesExcel()">
+									Descargar
+									<i class="icon-eraser3 ml-2"></i>
 								</button>
                             </div>
                         </div>
@@ -61,85 +48,102 @@
         </div>
         <div class="card">
             <div class="card-body">
-                <table id="tbl_mostrarUsuario" class="table datatable-basic">
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" id="tbl_mostrarCliente" class="table datatable-basic">
                     <thead class="bg-primary">
-                        <th>@lang('usuario.id_usuario') </th>
-                        <th>@lang('usuario.nombre_completo') </th>
-                        <th>@lang('usuario.user_name') </th>
-                        <th>@lang('usuario.created_at') </th>
-                        <th>@lang('usuario.nombre_perfiles') </th>
-                        <th>@lang('usuario.estado') </th>
+                        <th>Id </th>
+                        <th>Nombre </th>
+                        <th>Apellido Paterno </th>
+                        <th>Apellido Materno</th>
+                        <th>Tipo Cliente </th>
                         <th class="text-center">Acciones</th>
                     </thead>
+                    <tbody>
+                        <tr *ngFor="let cliente of lst_cliente">
+                            <td>{{ cliente.id }}</td>
+                            <td>{{ cliente.nombre }}</td>
+                            <td>{{ cliente.apellidoPaterno }}</td>
+                            <td>{{ cliente.apellidoMaterno }}</td>
+                            <td>{{ cliente.tipoClienteId }}</td>
+                            <td>
+                                <a class="waves-effect waves-dark mr-2" (click)="modificarCliente(cliente.id,modal_cliente )" title="Modificar">
+                                    <i class="ti-pencil font-20"></i>
+                                </a>
+                                <a class="waves-effect waves-dark mr-2" (click)="eliminarCliente(cliente.id)" title="Eliminar">
+                                    <i class="ti-close font-20"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
-<div id="dvjson"></div>
-<div class="modal p-form fade" id="mdl_ActualizarUsuario" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-notify modal-warning" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-center">
-                <h5 id="CabeceraModal" class="modal-title"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					x
-				</button>
-            </div>
-            <form id="frm_MostrarRegistroUsuario">
-                <div class="modal-body form-group">
-                    <input type="hidden" id="ih_id_usuario">
-                    <div class="row form-group ">
-                        <div class="col-md-4">
-                            <label class="col-form-label" for="txt_nombre_completo_MRU">
-								@lang('usuario.nombre_completo'):
-								<span>(*)</span>
-						 	</label>
-                            <input type="text" id="txt_nombre_completo_MRU" name="txt_nombre_completo_MRU" class="form-control" maxlength="450">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="col-form-label" for="txt_user_name_MRU">
-								@lang('usuario.user_name')
-								<span>(*)</span>
-							</label>
-                            <input type="text" id="txt_user_name_MRU" name="txt_user_name_MRU" class="form-control" maxlength="250">
-                        </div>
-
-                    </div>
-                    <div class="row form-group">
-                        <div class="col-md-8">
-                            <label class="col-form-label" for="">
-								@lang('usuario.nombre_perfiles')
-							</label>
-                            <select class="form-control select" multiple="multiple" id="sm_perfiles_MRU" data-fouc>
-							</select>
-                        </div>
-                    </div>
-                    <div class="row form-group">
-                        <div class="col-md-8">
-                            <label class="col-form-label" for="cb_id_empresa_MRU">
-								Clientes
-							</label>
-                            <select class="form-control select-search custom-select" name="cb_id_empresa_MRU" id="cb_id_empresa_MRU" data-fouc></select>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="table-responsive">
-                            <table id="tbl_mostrarUsuariosClientes" class="table datatable-basic">
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </form>
-            <div class="modal-footer">
-                <button id="btn_cerrar_MRU" type="button" class="btn text-primary ml-3" data-dismiss="modal">
-					Cerrar
-				</button>
-                <button id="btn_guardar_MRU" type="button" class="btn bg-primary">
-					Guardar
-				</button>
-            </div>
-        </div>
+<ng-template #modal_cliente let-modal>
+    <div class="modal-header bg-primary text-center">
+        <h5 id="CabeceraModal" class="modal-title">{{title_Modal}} </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            x
+        </button>
     </div>
 
-</div>
+    <form (ngSubmit)="guardarCliente(frm_MostrarRegistroUsuario)" name="frm_MostrarRegistroUsuario" #frm_MostrarRegistroUsuario="ngForm">
+        <div class="modal-body form-group">
+            <input type="hidden" [(ngModel)]="cliente.id" name="Id">
+            <div class="row form-group ">
+                <label class="col-form-label col-md-4" for="ApellidoPaterno">Apellido Paterno: <span>(*)</span></label>
+                <div class="form-group col-md-8">
+                    <input type="text" [(ngModel)]="cliente.apellidoPaterno" name="ApellidoPaterno" class="form-control" maxlength="50" required>
+                </div>
+            </div>
+            <div class="row form-group ">
+                <label class="col-form-label col-md-4" for="txt_user_name_MRU">Apellido Materno: <span>(*)</span></label>
+                <div class="form-group col-md-8">
+                    <input type="text" [(ngModel)]="cliente.apellidoMaterno" name="ApellidoMaterno" class="form-control" maxlength="50" required>
+                </div>
+            </div>
+            <div class="row form-group ">
+                <label class="col-form-label col-md-4" for="txt_user_name_MRU">Nombre: <span>(*)</span></label>
+                <div class="form-group col-md-8">
+                    <input type="text" [(ngModel)]="cliente.nombre" name="Nombre" class="form-control" maxlength="50" required>
+                </div>
+            </div>
+            <div class="row form-group">
+                <label class="col-form-label col-md-4" for="txt_user_name_MRU">Tipo Cliente: <span>(*)</span></label>
+                <div class="col-md-8">
+                    <select class="form-control custom-select" [(ngModel)]="cliente.tipoClienteId" name="TipoClienteId" required>                  
+                        <option value="" selected>Seleccione</option>
+                        <option *ngFor="let item of lst_tipoCliente" [value]="item.id">{{item.descripcion}} </option>     
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn text-primary ml-3" data-dismiss="modal" (click)="modal.dismiss('Cross click')">
+            Cerrar
+        </button>
+            <button type="submit " class="btn bg-primary ">
+            Guardar
+        </button>
+        </div>
+    </form>
+</ng-template>
+<ng-template #content2 let-c="close" let-d="dismiss">
+    <div class="modal-header bg-primary text-center">
+        <h5 id="CabeceraModal" class="modal-title">Confirmación de eliminación</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            x
+        </button>
+    </div>
+    <div class="modal-body form-group">
+        <p>¿Desea eliminar el registro?</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn text-primary ml-3" data-dismiss="modal" (click)="modal.dismiss('Cross click')">
+        Si
+    </button>
+        <button type="submit " class="btn bg-primary ">
+        No
+    </button>
+    </div>
+</ng-template>
