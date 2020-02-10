@@ -7,6 +7,7 @@ import { TokenModel } from '../models/Token.model';
 @Injectable({
   providedIn: 'root'
 })
+
 export class TipoClienteService {
    private url_app = 'https://localhost:44386';
  
@@ -14,6 +15,7 @@ export class TipoClienteService {
   constructor(private http: HttpClient) {
     this.leerToken();
   }
+
   getQuery(url: string) {
     const urlBase = `${this.url_app}${url}`;
     const headers = new HttpHeaders({

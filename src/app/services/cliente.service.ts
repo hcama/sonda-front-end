@@ -9,12 +9,14 @@ import { TokenModel } from '../models/Token.model';
 })
 export class ClienteService {
 
+
    private url_app = 'https://localhost:44386';
 
   token: TokenModel = new TokenModel();
   constructor(private http: HttpClient) {
     this.leerToken();
    }
+
   getQuery(url: string) {
     const urlBase = `${this.url_app}${url}`;
     const headers = new HttpHeaders({
