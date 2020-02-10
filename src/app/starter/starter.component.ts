@@ -8,13 +8,15 @@ import { ClienteService } from '../services/cliente.service';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { saveAs } from 'file-saver';
+import { LoginService } from '../services/login.service';
+import { UsuarioModel } from '../models/Usuario.modelo';
 
 @Component({
   templateUrl: './starter.component.html'
 })
 export class StarterComponent implements AfterViewInit {
 
-  g_indicador:string;
+  g_indicador: string;
   lst_tipoCliente: TipoClienteModel[] =  [];
   lst_cliente: ClienteModel[] =  [];
   cliente: ClienteModel = new ClienteModel();
@@ -26,6 +28,7 @@ export class StarterComponent implements AfterViewInit {
   dtTrigger: Subject<any> = new Subject();
   constructor(private modalService: NgbModal, private modalService2: NgbModal,
     private tipoClienteService: TipoClienteService, private clienteService: ClienteService,
+    private loginService: LoginService,
     private toastr: ToastrService) {
   }
   buscarClientes() {
@@ -141,7 +144,6 @@ export class StarterComponent implements AfterViewInit {
               this.dtTrigger.next();
             });
         });
-      //console.log(id);
     }
   }
   openModal(content) {
@@ -167,20 +169,28 @@ export class StarterComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.tipoClienteService.getTodosTiposClientes().subscribe(
-      resp => this.lst_tipoCliente = resp);
-    this.clienteService.getTodosClientes().subscribe(
-      resp => {
-        this.lst_cliente = resp;
-        this.dtTrigger.next();
-      });
-      this.dtOptions = {
-        pagingType: 'full_numbers',
-        pageLength: 7,
-        deferRender: true,
-        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, 'All']],
-        retrieve: true
-      };
+    const usuario: UsuarioModel = new UsuarioModel();
+    usuario.email = 'admin@admin.com';
+    usuario.password = 'mZq4t7w!z%C*F-J';
+    this.loginService.login(usuario).subscribe(
+      respLog => {       
+        this.tipoClienteService.getTodosTiposClientes().subscribe(
+          resp => this.lst_tipoCliente = resp);
+        this.clienteService.getTodosClientes().subscribe(
+          resp => {
+            this.lst_cliente = resp;
+            this.dtTrigger.next();
+          });
+          this.dtOptions = {
+            pagingType: 'full_numbers',
+            pageLength: 7,
+            deferRender: true,
+            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, 'All']],
+            retrieve: true
+          };
+      }
+    );
+
   }
   // tslint:disable-next-line: use-lifecycle-interface
   ngOnDestroy() {

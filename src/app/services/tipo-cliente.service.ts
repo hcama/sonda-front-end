@@ -1,22 +1,25 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { TipoClienteModel } from '../models/TipoCliente.model';
+import { TokenModel } from '../models/Token.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TipoClienteService {
-  //private url_app = 'https://localhost:44386';
-  private url_app = 'https://sondaapi20200117013021.azurewebsites.net';
-  constructor(private http: HttpClient) { }
+   private url_app = 'https://localhost:44386';
+ 
+  token: TokenModel = new TokenModel();
+  constructor(private http: HttpClient) {
+    this.leerToken();
+  }
   getQuery(url: string) {
     const urlBase = `${this.url_app}${url}`;
-    // const headers = new HttpHeaders({
-    //   'Authorization': 'Bearer BQBkyuLNNcGRMWWjIRxU3KHnPgXfV46KI6lkNhyadzVW_O9W2VaPOBZdGjQ8S9WkTMlxF9ITIOwzvdSQNzg'
-    // });
-    // return this.http.get(urlBase, {headers});
-    return this.http.get(urlBase);
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.token.token}`
+    });
+    return this.http.get(urlBase, {headers});
   }
   getTodosTiposClientes() {
     return this.getQuery('/api/TipoCliente')
@@ -31,5 +34,9 @@ export class TipoClienteService {
       tipoClientes.push(tipoCliente);
     });
     return tipoClientes;
+  }
+  leerToken() {
+    this.token.token = (localStorage.getItem('token')) ? localStorage.getItem('token') : '';
+    this.token.expiration = (localStorage.getItem('expiration')) ? localStorage.getItem('expiration') : '';
   }
 }
